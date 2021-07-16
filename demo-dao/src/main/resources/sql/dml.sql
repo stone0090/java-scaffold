@@ -1,0 +1,15 @@
+MERGE INTO `jws_user`(id, gmt_create, gmt_modified, username, password) VALUES ('1', now(), now(), 'stone', '123456'); -- REPLACE INTO
+MERGE INTO `jws_user`(id, gmt_create, gmt_modified, username, password) VALUES ('2', now(), now(), 'tommy', '123456'); -- REPLACE INTO
+MERGE INTO `jws_role`(id, gmt_create, gmt_modified, role_code, role_name) VALUES ('1', now(), now(), 'admin', '管理员'); -- REPLACE INTO
+MERGE INTO `jws_role`(id, gmt_create, gmt_modified, role_code, role_name) VALUES ('2', now(), now(), 'visitor', '游客'); -- REPLACE INTO
+MERGE INTO `jws_permission`(id, gmt_create, gmt_modified, permission_code, permission_name) VALUES ('1', now(), now(), 'insert', '新增'); -- REPLACE INTO
+MERGE INTO `jws_permission`(id, gmt_create, gmt_modified, permission_code, permission_name) VALUES ('2', now(), now(), 'delete', '删除'); -- REPLACE INTO
+MERGE INTO `jws_permission`(id, gmt_create, gmt_modified, permission_code, permission_name) VALUES ('1', now(), now(), 'update', '更新'); -- REPLACE INTO
+MERGE INTO `jws_permission`(id, gmt_create, gmt_modified, permission_code, permission_name) VALUES ('2', now(), now(), 'select', '查询'); -- REPLACE INTO
+MERGE INTO `jws_user_role_relation`(id, gmt_create, gmt_modified, username, role_code) VALUES ('1', now(), now(), 'stone', 'admin'); -- REPLACE INTO
+MERGE INTO `jws_user_role_relation`(id, gmt_create, gmt_modified, username, role_code) VALUES ('2', now(), now(), 'tommy', 'visitor'); -- REPLACE INTO
+MERGE INTO `jws_role_permission_relation`(id, gmt_create, gmt_modified, role_code, permission_code) VALUES ('1', now(), now(), 'admin', 'insert'); -- REPLACE INTO
+MERGE INTO `jws_role_permission_relation`(id, gmt_create, gmt_modified, role_code, permission_code) VALUES ('2', now(), now(), 'admin', 'delete'); -- REPLACE INTO
+MERGE INTO `jws_role_permission_relation`(id, gmt_create, gmt_modified, role_code, permission_code) VALUES ('3', now(), now(), 'admin', 'update'); -- REPLACE INTO
+MERGE INTO `jws_role_permission_relation`(id, gmt_create, gmt_modified, role_code, permission_code) VALUES ('4', now(), now(), 'admin', 'select'); -- REPLACE INTO
+MERGE INTO `jws_role_permission_relation`(id, gmt_create, gmt_modified, role_code, permission_code) VALUES ('5', now(), now(), 'visitor', 'select'); -- REPLACE INTO

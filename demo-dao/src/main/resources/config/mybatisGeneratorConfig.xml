@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--    <classPathEntry location="C:/Oracle/Middleware/wlserver_10.3/server/lib/ojdbc6.jar"/>-->
+    <context id="my" targetRuntime="MyBatis3">
+
+        <commentGenerator>
+            <property name="suppressDate" value="false"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="org.h2.Driver"
+                        connectionURL="jdbc:h2:./src/main/resources/database/demo" userId="san"
+                        password="">
+        </jdbcConnection>
+
+        <javaModelGenerator targetProject="src/main/java"
+                            targetPackage="com.example.demo.dao.mybatis.entity">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetProject="src/main/resources"
+                         targetPackage="mybatis/mapper">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <javaClientGenerator targetProject="src/main/java" type="XMLMAPPER"
+                             targetPackage="com.example.demo.dao.mybatis.mapper">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <table tableName="JWS_USER" domainObjectName="UserDO"/>
+        <table tableName="jws_role" domainObjectName="RoleDO"/>
+        <table tableName="jws_permission" domainObjectName="PermissionDO"/>
+        <table tableName="jws_user_role_relation" domainObjectName="UserRoleRelationDO"/>
+        <table tableName="jws_role_permission_relation" domainObjectName="RolePermissionRelationDO"/>
+
+    </context>
+</generatorConfiguration>
