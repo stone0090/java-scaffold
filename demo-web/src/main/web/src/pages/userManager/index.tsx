@@ -1,4 +1,4 @@
-import { PlusOutlined } from '@ant-design/icons';
+import { HddFilled, PlusOutlined } from '@ant-design/icons';
 import { Drawer, Form, Button, Col, Row, Input, message } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -11,61 +11,57 @@ import { requestGet, requestPost } from '@/services/api';
 const UserManager: React.FC = () => {
 
   const actionRef = useRef<ActionType>();
-  const [showDetailVisible, setShowDetailVisible] = useState<boolean>(false);
-  const [editFormVisible, setEditFormVisible] = useState<boolean>(false);
-  const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
   const [form] = Form.useForm();
+  const [currentRow, setCurrentRow] = useState<any>();
+  const [addStatus, setAddStatus] = useState<boolean>(true);
+  const [formVisible, setFormVisible] = useState<boolean>(false);
+  const [detailVisible, setDetailVisible] = useState<boolean>(false);
+  type detailOrEditCallback = (record: any) => void;
 
-  const handleQuery = async (params: any, sort: any, filter: any) => {
-    console.log(params)
-    const result = await requestGet('/demo/user/list', params);
-    if(result.success){
-      return {
-        data: result.data.list,
-        total: result.data.total,
-        success: result.success
+  const handleQuery = async (params: any) => {
+    const result: Protocol.RestResult = await requestGet<Protocol.RestResult>('/demo/user/list', params);
+    return {
+      data: result?.data?.list,
+      total: result?.data?.total,
+      success: result?.success
+    }
+  };
+
+  const handleGet = async (record: any, callback: detailOrEditCallback) => {
+    const result: Protocol.RestResult = await requestGet<Protocol.RestResult>('/demo/user/get', { "id": record.id });
+    if (result.success) {
+      callback(result.data);
+    }
+  };
+
+  const handleSave = async (record: any) => {
+    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/demo/user/save', record);
+    console.log(result)
+    if (result.success) {
+      setFormVisible(false);
+      message.success((addStatus ? '新建' : '修改') + '成功！');
+      if (actionRef.current) {
+        actionRef.current.reload();
       }
+    } else {
+      message.success((addStatus ? '新建' : '修改') + '失败，请重试！');
     }
   };
 
-  const handleEdit = async (values: any) => {
-    const hide = message.loading('正在添加...');
-    try {
-      console.log(values)
-      const result = await requestPost('/demo/user/save', values);
-      console.log(result)
-      if (result.success) {
-        setEditFormVisible(false);
-        if (actionRef.current) {
-          actionRef.current.reload();
-        }
+  const handleRemove = async (record: any) => {
+    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/demo/user/remove', { "id": record.id });
+    if (result.success) {
+      setFormVisible(false);
+      message.success('删除成功！');
+      if (actionRef.current) {
+        actionRef.current.reload();
       }
-      hide();
-      message.success('添加成功！');
-    } catch (error) {
-      hide();
-      message.error('添加失败请重试！');
+    } else {
+      message.success('删除失败，请重试');
     }
   };
 
-  const handleRemove = async (selectedRows: API.RuleListItem[]) => {
-    const hide = message.loading('正在删除');
-    if (!selectedRows) return true;
-    try {
-      // await removeRule({
-      //   key: selectedRows.map((row) => row.key),
-      // });
-      hide();
-      message.success('删除成功，即将刷新');
-      return true;
-    } catch (error) {
-      hide();
-      message.error('删除失败，请重试');
-      return false;
-    }
-  };
-
-  const columns: ProColumns[] = [
+  const briefColumns: ProColumns[] = [
     {
       title: '账号',
       dataIndex: 'username',
@@ -73,8 +69,9 @@ const UserManager: React.FC = () => {
         return (
           <a
             onClick={() => {
-              setCurrentRow(record);
-              setShowDetailVisible(true);
+              setCurrentRow(undefined);
+              setDetailVisible(true);
+              handleGet(record, setCurrentRow);
             }}
           >
             {dom}
@@ -83,22 +80,12 @@ const UserManager: React.FC = () => {
       },
     },
     {
-      title: '昵称',
-      dataIndex: 'nickname',
+      title: '密码',
+      dataIndex: 'password',
       valueType: 'textarea',
     },
     {
-      title: '电话',
-      dataIndex: 'phone',
-      valueType: 'textarea',
-    },
-    {
-      title: '邮箱',
-      dataIndex: 'status',
-      valueType: 'textarea',
-    },
-    {
-      title: '上次更新时间',
+      title: '更新时间',
       dataIndex: 'gmtModified',
       valueType: 'dateTime',
     },
@@ -108,14 +95,90 @@ const UserManager: React.FC = () => {
       valueType: 'option',
       render: (dom, record) => [
         <a
-          key="config"
+          key="edit"
           onClick={() => {
-            // handleUpdateModalVisible(true);
-            setCurrentRow(record);
+            form.resetFields();
+            setAddStatus(false);
+            setDetailVisible(false);
+            setFormVisible(true);
+            handleGet(record, form.setFieldsValue);
           }}
-        >修改
+        >
+          修改
         </a>,
-        <a key="subscribeAlert" >删除</a>,
+        <a
+          key="remove"
+          onClick={() => {
+            handleRemove(record)
+          }}
+        >
+          删除
+        </a>,
+      ],
+    },
+  ];
+
+  const detailColumns: ProColumns[] = [
+    {
+      title: '账号',
+      dataIndex: 'username',
+      valueType: 'textarea',
+    },
+    {
+      title: '密码',
+      dataIndex: 'password',
+      valueType: 'textarea',
+    },
+    {
+      title: '昵称',
+      dataIndex: 'nickname',
+      valueType: 'textarea',
+    },
+    {
+      title: '简介',
+      dataIndex: 'resume',
+      valueType: 'textarea',
+    },
+    {
+      title: '电话',
+      dataIndex: 'phone',
+      valueType: 'textarea',
+    },
+    {
+      title: '邮箱',
+      dataIndex: 'email',
+      valueType: 'textarea',
+    },
+    {
+      title: '更新时间',
+      dataIndex: 'gmtModified',
+      valueType: 'dateTime',
+    },
+    {
+      title: '操作',
+      dataIndex: 'option',
+      valueType: 'option',
+      render: (dom, record) => [
+        <a
+          key="edit"
+          onClick={() => {
+            form.resetFields();
+            setAddStatus(false);
+            setDetailVisible(false);
+            setFormVisible(true);
+            handleGet(record, form.setFieldsValue);
+          }}
+        >
+          修改
+        </a>,
+        <a
+          key="remove"
+          onClick={() => {
+            handleRemove(record)
+          }}
+        >
+          删除
+        </a>,
       ],
     },
   ];
@@ -123,37 +186,37 @@ const UserManager: React.FC = () => {
   return (
     <PageContainer>
       <ProTable
-        headerTitle='查询表格'
+        headerTitle='用户列表'
         actionRef={actionRef}
-        rowKey="key"
+        bordered={true}
+        rowKey="id"
         search={{
-          labelWidth: 120,
+          labelWidth: 80,
         }}
         toolBarRender={() => [
           <Button
             type="primary"
             key="primary"
             onClick={() => {
-              // handleModalVisible(true);
-              setEditFormVisible(true);
+              form.resetFields();
+              setFormVisible(true);
+              setAddStatus(true);
             }}
-          ><PlusOutlined /> 新建
+          ><PlusOutlined />
+            新建
           </Button>
         ]}
-        request={(params, sorter, filter) => handleQuery({ ...params, sorter, filter })}
-        columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => {
-            setSelectedRows(selectedRows);
-          },
+        request={handleQuery}
+        columns={briefColumns}
+        pagination={{
+          pageSize: 8
         }}
       />
-
       <Drawer
         title="新建用户"
         width={720}
-        onClose={() => { setEditFormVisible(false); }}
-        visible={editFormVisible}
+        onClose={() => { setFormVisible(false); }}
+        visible={formVisible}
         bodyStyle={{ paddingBottom: 80 }}
         footer={
           <div
@@ -161,7 +224,10 @@ const UserManager: React.FC = () => {
               textAlign: 'right',
             }}
           >
-            <Button onClick={() => { setEditFormVisible(false); }} style={{ marginRight: 8 }}>
+            <Button
+              onClick={() => { setFormVisible(false); }}
+              style={{ marginRight: 8 }}
+            >
               取消
             </Button>
             <Button
@@ -176,7 +242,7 @@ const UserManager: React.FC = () => {
         <Form
           layout="vertical"
           form={form}
-          onFinish={handleEdit}
+          onFinish={handleSave}
         >
           <Row gutter={16}>
             <Col span={12}>
@@ -194,38 +260,72 @@ const UserManager: React.FC = () => {
                 label="密码"
                 rules={[{ required: true, message: '密码不能空' }]}
               >
-                <Input
-                  placeholder="6~20位字符，只能包含英文字母、数字、符号"
-                />
+                <Input placeholder="6~20位字符，只能包含英文字母、数字、符号" />
               </Form.Item>
             </Col>
           </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="nickname"
+                label="昵称"
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="resume"
+                label="简介"
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="phone"
+                label="电话"
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="email"
+                label="邮箱"
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Form.Item name="id"></Form.Item>
         </Form>
       </Drawer>
       <Drawer
-        width={600}
-        visible={showDetailVisible}
+        width={720}
+        visible={detailVisible}
         onClose={() => {
           setCurrentRow(undefined);
-          setShowDetailVisible(false);
+          setDetailVisible(false);
         }}
         closable={false}
       >
-        {currentRow?.name && (
-          <ProDescriptions<API.RuleListItem>
+        {currentRow?.username && (
+          <ProDescriptions<any>
             column={2}
-            title={currentRow?.name}
+            title={currentRow?.username}
             request={async () => ({
               data: currentRow || {},
             })}
             params={{
-              id: currentRow?.name,
+              id: currentRow?.id,
             }}
-            columns={columns as ProDescriptionsItemProps<API.RuleListItem>[]}
+            columns={detailColumns as ProDescriptionsItemProps<any>[]}
           />
         )}
       </Drawer>
-
     </PageContainer>
   );
 };
