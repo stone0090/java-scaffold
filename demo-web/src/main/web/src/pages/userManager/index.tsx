@@ -1,4 +1,4 @@
-import { HddFilled, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import { Drawer, Form, Button, Col, Row, Input, message } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -29,7 +29,7 @@ const UserManager: React.FC = () => {
 
   const handleGet = async (record: any, callback: detailOrEditCallback) => {
     const result: Protocol.RestResult = await requestGet<Protocol.RestResult>('/demo/user/get', { "id": record.id });
-    if (result.success) {
+    if (result?.success) {
       callback(result.data);
     }
   };
@@ -37,27 +37,23 @@ const UserManager: React.FC = () => {
   const handleSave = async (record: any) => {
     const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/demo/user/save', record);
     console.log(result)
-    if (result.success) {
+    if (result?.success) {
       setFormVisible(false);
       message.success((addStatus ? '新建' : '修改') + '成功！');
       if (actionRef.current) {
         actionRef.current.reload();
       }
-    } else {
-      message.success((addStatus ? '新建' : '修改') + '失败，请重试！');
     }
   };
 
   const handleRemove = async (record: any) => {
     const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/demo/user/remove', { "id": record.id });
-    if (result.success) {
+    if (result?.success) {
       setFormVisible(false);
       message.success('删除成功！');
       if (actionRef.current) {
         actionRef.current.reload();
       }
-    } else {
-      message.success('删除失败，请重试');
     }
   };
 

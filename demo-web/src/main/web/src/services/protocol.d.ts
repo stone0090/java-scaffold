@@ -6,6 +6,7 @@ declare namespace Protocol {
     type RestResult = {
         success?: boolean;
         data?: any;
+        errorCode?: string;
         errorMessage?: string;
     };
 
@@ -15,7 +16,7 @@ declare namespace Protocol {
             list?: any;
             current?: number;
             pageSize?: number;
-            total?: number;    
+            total?: number;
         };
         errorMessage?: string;
     };

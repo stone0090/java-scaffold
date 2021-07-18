@@ -88,15 +88,17 @@ export async function getInitialState(): Promise<{
  */
 export const request: RequestConfig = {
   errorHandler: (error: any) => {
-    const { response } = error;
-
-    if (!response) {
+    if (error.type == "HttpError") {
       notification.error({
-        description: '您的网络发生异常，无法连接服务器',
-        message: '网络异常',
+        message: "网络连接失败，请稍后重试",
+      });
+    } else {
+      notification.error({
+        message: "操作失败",
+        description: error.data.errorMessage,
       });
     }
-    throw error;
+    // throw error;
   },
 };
 
@@ -118,15 +120,15 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     },
     links: isDev
       ? [
-          <Link to="/umi/plugin/openapi" target="_blank">
-            <LinkOutlined />
-            <span>openAPI 文档</span>
-          </Link>,
-          <Link to="/~docs">
-            <BookOutlined />
-            <span>业务组件文档</span>
-          </Link>,
-        ]
+        <Link to="/umi/plugin/openapi" target="_blank">
+          <LinkOutlined />
+          <span>openAPI 文档</span>
+        </Link>,
+        <Link to="/~docs">
+          <BookOutlined />
+          <span>业务组件文档</span>
+        </Link>,
+      ]
       : [],
     menuHeaderRender: undefined,
     // 自定义 403 页面

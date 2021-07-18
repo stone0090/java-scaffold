@@ -1,4 +1,4 @@
-package com.example.demo.web.aop;
+package com.example.demo.web.config;
 
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -8,7 +8,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
-public class CrossFilter implements Filter {
+public class CrossFilterConfig implements Filter {
 
     @Override
     public void destroy() {
