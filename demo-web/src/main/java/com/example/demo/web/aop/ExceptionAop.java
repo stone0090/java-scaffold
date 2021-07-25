@@ -1,5 +1,7 @@
 package com.example.demo.web.aop;
 
+import javax.validation.ConstraintViolationException;
+
 import com.example.demo.api.protocal.RestResult;
 import com.example.demo.api.protocal.ResultCodeEnum;
 import com.example.demo.service.exception.CustomException;
@@ -10,10 +12,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionAop {
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    /**
+     * 统一处理 hibernate Validator 抛出来的参数校验异常
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
     public @ResponseBody
-    RestResult handleIllegalArgumentException(IllegalArgumentException e) {
-        return RestResult.failure(ResultCodeEnum.ARGUMENT_ERROR.getCode(), e.getMessage());
+    RestResult handleIllegalArgumentException(ConstraintViolationException e) {
+        StringBuilder message = new StringBuilder();
+        e.getConstraintViolations().forEach(x -> message.append(x.getMessage()).append("\n"));
+        return RestResult.failure(ResultCodeEnum.ARGUMENT_ERROR.getCode(), message.toString());
     }
 
     @ExceptionHandler(CustomException.class)

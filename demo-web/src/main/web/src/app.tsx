@@ -96,6 +96,9 @@ export const request: RequestConfig = {
       notification.error({
         message: "操作失败",
         description: error.data.errorMessage,
+        style: {
+          whiteSpace: 'pre-wrap',
+        }
       });
     }
     // throw error;

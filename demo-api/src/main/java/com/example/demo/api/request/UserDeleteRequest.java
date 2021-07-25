@@ -1,9 +1,10 @@
 package com.example.demo.api.request;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serializable;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 public class UserDeleteRequest implements Serializable {

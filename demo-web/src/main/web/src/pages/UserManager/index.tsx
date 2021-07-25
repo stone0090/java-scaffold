@@ -247,7 +247,7 @@ const UserManager: React.FC = () => {
                 label="账号"
                 rules={[{ required: true, message: '账号不能空' }]}
               >
-                <Input placeholder="6~20位字符，只能包含英文字母、数字、下划线" />
+                <Input placeholder="3~10位字符，只能包含英文字母、数字、下划线" />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -256,7 +256,7 @@ const UserManager: React.FC = () => {
                 label="密码"
                 rules={[{ required: true, message: '密码不能空' }]}
               >
-                <Input placeholder="6~20位字符，只能包含英文字母、数字、符号" />
+                <Input placeholder="3~10位字符，只能包含英文字母、数字、下划线" />
               </Form.Item>
             </Col>
           </Row>
@@ -266,7 +266,7 @@ const UserManager: React.FC = () => {
                 name="nickname"
                 label="昵称"
               >
-                <Input />
+                <Input placeholder="小于20位字符" />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -274,7 +274,7 @@ const UserManager: React.FC = () => {
                 name="resume"
                 label="简介"
               >
-                <Input />
+                <Input placeholder="小于20位字符" />
               </Form.Item>
             </Col>
           </Row>
@@ -284,7 +284,7 @@ const UserManager: React.FC = () => {
                 name="phone"
                 label="电话"
               >
-                <Input />
+                <Input placeholder="小于20位字符" />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -292,7 +292,7 @@ const UserManager: React.FC = () => {
                 name="email"
                 label="邮箱"
               >
-                <Input />
+                <Input placeholder="小于20位字符" />
               </Form.Item>
             </Col>
           </Row>

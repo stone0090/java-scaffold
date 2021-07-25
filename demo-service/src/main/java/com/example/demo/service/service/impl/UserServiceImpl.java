@@ -29,12 +29,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailVO login(UserLoginRequest request) {
-        // TODO：参数校验
-        UserDOExample userDOExample = new UserDOExample();
-        UserDOExample.Criteria criteria = userDOExample.createCriteria();
+        UserDOExample example = new UserDOExample();
+        UserDOExample.Criteria criteria = example.createCriteria();
         criteria.andIsDeletedEqualTo(0);
         criteria.andUsernameEqualTo(request.getUsername());
-        List<UserDO> userDOList = userDOMapper.selectByExample(userDOExample);
+        List<UserDO> userDOList = userDOMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(userDOList)) {
             throw new CustomException("用户名不存在");
         }
@@ -47,15 +46,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageResult<UserBriefVO> listUsers(UserQueryRequest queryRequest, PageRequest pageRequest) {
-        // TODO：参数校验
-        UserDOExample userDOExample = new UserDOExample();
-        UserDOExample.Criteria criteria = userDOExample.createCriteria();
+        UserDOExample example = new UserDOExample();
+        UserDOExample.Criteria criteria = example.createCriteria();
         criteria.andIsDeletedEqualTo(0);
         if (!StringUtils.isEmpty(queryRequest.getUsername())) {
             criteria.andUsernameEqualTo(queryRequest.getUsername());
         }
         PageHelper.startPage(pageRequest.getCurrent(), pageRequest.getPageSize());
-        List<UserDO> userDOList = userDOMapper.selectByExample(userDOExample);
+        List<UserDO> userDOList = userDOMapper.selectByExample(example);
         PageResult<UserBriefVO> pageResult = PageResult.buildPageResult(userDOList);
         pageResult.setList(userDOList.stream().map(UserConverter::toBriefVO).collect(Collectors.toList()));
         return pageResult;
@@ -63,22 +61,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailVO getUser(Integer id) {
-        // TODO：参数校验
-        if (StringUtils.isEmpty(id)) {
-            // 提示删除的id不能为空
-            return null;
-        }
-        UserDOExample userDOExample = new UserDOExample();
-        UserDOExample.Criteria criteria = userDOExample.createCriteria();
+        UserDOExample example = new UserDOExample();
+        UserDOExample.Criteria criteria = example.createCriteria();
         criteria.andIsDeletedEqualTo(0);
         criteria.andIdEqualTo(id);
-        List<UserDO> userDOList = userDOMapper.selectByExample(userDOExample);
+        List<UserDO> userDOList = userDOMapper.selectByExample(example);
         return CollectionUtils.isEmpty(userDOList) ? null : UserConverter.toDetailVO(userDOList.get(0));
     }
 
     @Override
     public int saveUser(UserSaveRequest request) {
-        // TODO：参数校验
         Date now = new Date();
         UserDO userDO = UserConverter.toDO(request);
         userDO.setGmtModified(now);
@@ -93,10 +85,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int removeUser(UserDeleteRequest request) {
-        if (request == null || StringUtils.isEmpty(request.getId())) {
-            // 提示删除的id不能为空
-            return 0;
-        }
         UserDO userDO = new UserDO();
         userDO.setId(request.getId());
         userDO.setIsDeleted((int) System.currentTimeMillis());

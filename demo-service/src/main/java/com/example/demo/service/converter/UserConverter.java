@@ -41,7 +41,6 @@ public class UserConverter {
         userDO.setUsername(request.getUsername());
         userDO.setPassword(request.getPassword());
         userDO.setNickname(request.getNickname());
-        userDO.setAvatar(request.getAvatar());
         userDO.setResume(request.getResume());
         userDO.setPhone(request.getPhone());
         userDO.setEmail(request.getEmail());
