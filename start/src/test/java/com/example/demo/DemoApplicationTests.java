@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.api.request.UserSaveRequest;
 import com.example.demo.service.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ class DemoApplicationTests {
         //UserSaveRequest request = new UserSaveRequest();
         //request.setUsername("@@@");
         //userService.saveUser(request);
+        userService.getUserWithRole("stone");
     }
 
 }

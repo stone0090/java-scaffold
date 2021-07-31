@@ -8,6 +8,7 @@
     <result column="IS_DELETED" jdbcType="INTEGER" property="isDeleted" />
     <result column="USERNAME" jdbcType="VARCHAR" property="username" />
     <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="SALT" jdbcType="VARCHAR" property="salt" />
     <result column="NICKNAME" jdbcType="VARCHAR" property="nickname" />
     <result column="AVATAR" jdbcType="VARCHAR" property="avatar" />
     <result column="RESUME" jdbcType="VARCHAR" property="resume" />
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    ID, GMT_CREATE, GMT_MODIFIED, IS_DELETED, USERNAME, PASSWORD, NICKNAME, AVATAR, RESUME, 
-    PHONE, EMAIL
+    ID, GMT_CREATE, GMT_MODIFIED, IS_DELETED, USERNAME, PASSWORD, SALT, NICKNAME, AVATAR, 
+    RESUME, PHONE, EMAIL
   </sql>
   <select id="selectByExample" parameterType="com.example.demo.dao.mybatis.entity.UserDOExample" resultMap="BaseResultMap">
     select
@@ -109,12 +110,14 @@
   <insert id="insert" parameterType="com.example.demo.dao.mybatis.entity.UserDO">
     insert into JWS_USER (ID, GMT_CREATE, GMT_MODIFIED, 
       IS_DELETED, USERNAME, PASSWORD, 
-      NICKNAME, AVATAR, RESUME, 
-      PHONE, EMAIL)
+      SALT, NICKNAME, AVATAR, 
+      RESUME, PHONE, EMAIL
+      )
     values (#{id,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{nickname,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{resume,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR})
+      #{salt,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, 
+      #{resume,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.example.demo.dao.mybatis.entity.UserDO">
     insert into JWS_USER
@@ -136,6 +139,9 @@
       </if>
       <if test="password != null">
         PASSWORD,
+      </if>
+      <if test="salt != null">
+        SALT,
       </if>
       <if test="nickname != null">
         NICKNAME,
@@ -171,6 +177,9 @@
       </if>
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
       </if>
       <if test="nickname != null">
         #{nickname,jdbcType=VARCHAR},
@@ -216,6 +225,9 @@
       <if test="record.password != null">
         PASSWORD = #{record.password,jdbcType=VARCHAR},
       </if>
+      <if test="record.salt != null">
+        SALT = #{record.salt,jdbcType=VARCHAR},
+      </if>
       <if test="record.nickname != null">
         NICKNAME = #{record.nickname,jdbcType=VARCHAR},
       </if>
@@ -244,6 +256,7 @@
       IS_DELETED = #{record.isDeleted,jdbcType=INTEGER},
       USERNAME = #{record.username,jdbcType=VARCHAR},
       PASSWORD = #{record.password,jdbcType=VARCHAR},
+      SALT = #{record.salt,jdbcType=VARCHAR},
       NICKNAME = #{record.nickname,jdbcType=VARCHAR},
       AVATAR = #{record.avatar,jdbcType=VARCHAR},
       RESUME = #{record.resume,jdbcType=VARCHAR},
@@ -271,6 +284,9 @@
       <if test="password != null">
         PASSWORD = #{password,jdbcType=VARCHAR},
       </if>
+      <if test="salt != null">
+        SALT = #{salt,jdbcType=VARCHAR},
+      </if>
       <if test="nickname != null">
         NICKNAME = #{nickname,jdbcType=VARCHAR},
       </if>
@@ -296,6 +312,7 @@
       IS_DELETED = #{isDeleted,jdbcType=INTEGER},
       USERNAME = #{username,jdbcType=VARCHAR},
       PASSWORD = #{password,jdbcType=VARCHAR},
+      SALT = #{salt,jdbcType=VARCHAR},
       NICKNAME = #{nickname,jdbcType=VARCHAR},
       AVATAR = #{avatar,jdbcType=VARCHAR},
       RESUME = #{resume,jdbcType=VARCHAR},

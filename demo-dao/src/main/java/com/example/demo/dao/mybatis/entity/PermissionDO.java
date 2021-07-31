@@ -15,6 +15,8 @@ public class PermissionDO {
 
     private String permissionName;
 
+    private String permissionUrl;
+
     public Integer getId() {
         return id;
     }
@@ -61,5 +63,13 @@ public class PermissionDO {
 
     public void setPermissionName(String permissionName) {
         this.permissionName = permissionName == null ? null : permissionName.trim();
+    }
+
+    public String getPermissionUrl() {
+        return permissionUrl;
+    }
+
+    public void setPermissionUrl(String permissionUrl) {
+        this.permissionUrl = permissionUrl == null ? null : permissionUrl.trim();
     }
 }

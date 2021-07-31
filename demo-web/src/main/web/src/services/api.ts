@@ -12,7 +12,7 @@ export async function requestGet<T>(url: string, params?: any, options?: any) {
   });
 }
 
-export async function requestPost<T>(url: string, values: any, options?: any) {
+export async function requestPost<T>(url: string, values?: any, options?: any) {
   return request<T>(url, {
     method: 'POST',
     headers: {

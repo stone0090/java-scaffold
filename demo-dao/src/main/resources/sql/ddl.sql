@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS `jws_user` (
 `is_deleted` int(11) NOT NULL DEFAULT 0 COMMENT '删除标记',
 `username` varchar(50) NOT NULL COMMENT '用户名称',
 `password` varchar(50) NOT NULL COMMENT '登陆密码',
+`salt` varchar(50) DEFAULT NULL COMMENT '密码加盐',
 `nickname` varchar(50) DEFAULT NULL COMMENT '昵称',
 `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
 `resume` varchar(255) DEFAULT NULL COMMENT '简介',
@@ -32,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `jws_permission` (
 `is_deleted` int(11) NOT NULL DEFAULT 0 COMMENT '删除标记',
 `permission_code` varchar(50) NOT NULL COMMENT '权限标识',
 `permission_name` varchar(50) NOT NULL COMMENT '权限名称',
+`permission_url` varchar(50) NOT NULL COMMENT '权限路径',
 PRIMARY KEY (`id`),
 UNIQUE KEY `uk_permission` (`permission_code`, `is_deleted`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8

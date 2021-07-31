@@ -2,9 +2,14 @@ package com.example.demo.service.converter;
 
 
 import com.example.demo.api.request.UserSaveRequest;
+import com.example.demo.api.response.PermissionVO;
+import com.example.demo.api.response.RoleVO;
 import com.example.demo.api.response.UserBriefVO;
 import com.example.demo.api.response.UserDetailVO;
+import com.example.demo.dao.mybatis.entity.PermissionDO;
+import com.example.demo.dao.mybatis.entity.RoleDO;
 import com.example.demo.dao.mybatis.entity.UserDO;
+import com.example.demo.dao.mybatis.entity.UserRoleRelationDO;
 
 public class UserConverter {
 
@@ -46,4 +51,22 @@ public class UserConverter {
         userDO.setEmail(request.getEmail());
         return userDO;
     }
+
+    public static RoleVO toRoleVO(RoleDO roleDO) {
+        RoleVO roleVO = new RoleVO();
+        roleVO.setId(roleDO.getId());
+        roleVO.setRoleCode(roleDO.getRoleCode());
+        roleVO.setRoleName(roleDO.getRoleName());
+        return roleVO;
+    }
+
+    public static PermissionVO toPermissionVO(PermissionDO permissionDO) {
+        PermissionVO permissionVO = new PermissionVO();
+        permissionVO.setId(permissionDO.getId());
+        permissionVO.setPermissionCode(permissionDO.getPermissionCode());
+        permissionVO.setPermissionName(permissionDO.getPermissionName());
+        permissionVO.setPermissionUrl(permissionDO.getPermissionUrl());
+        return permissionVO;
+    }
+
 }

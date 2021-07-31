@@ -1,10 +1,13 @@
 package com.example.demo.api.response;
 
+import java.util.List;
+
 import lombok.Data;
 
-import java.io.Serializable;
-import java.util.Date;
-
+/**
+ * @author stone
+ * @date 2021/07/26
+ */
 @Data
 public class UserDetailVO extends UserBriefVO {
 
@@ -21,5 +24,10 @@ public class UserDetailVO extends UserBriefVO {
     private String loginType;
 
     private String access;
+
+    /**
+     * 用户可以有多个角色
+     */
+    private List<RoleVO> roles;
 
 }

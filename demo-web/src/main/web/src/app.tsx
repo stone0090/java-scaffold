@@ -5,8 +5,8 @@ import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
+import { requestGet } from '@/services/api';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -26,8 +26,8 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      const currentUser = await queryCurrentUser();
-      return currentUser;
+      const result: Protocol.RestResult = await requestGet<Protocol.RestResult>('/demo/user/current');
+      return result?.data;
     } catch (error) {
       history.push(loginPath);
     }
@@ -37,14 +37,14 @@ export async function getInitialState(): Promise<{
   if (history.location.pathname !== loginPath) {
     const currentUser = await fetchUserInfo();
     return {
-      fetchUserInfo,
-      currentUser,
       settings: {},
+      currentUser,
+      fetchUserInfo,
     };
   }
   return {
-    fetchUserInfo,
     settings: {},
+    fetchUserInfo,
   };
 }
 
@@ -93,13 +93,15 @@ export const request: RequestConfig = {
         message: "网络连接失败，请稍后重试",
       });
     } else {
-      notification.error({
-        message: "操作失败",
-        description: error.data.errorMessage,
-        style: {
-          whiteSpace: 'pre-wrap',
-        }
-      });
+      if (error.data) {
+        notification.error({
+          message: "操作失败",
+          description: error.data.errorMessage,
+          style: {
+            whiteSpace: 'pre-wrap',
+          }
+        });
+      }
     }
     // throw error;
   },

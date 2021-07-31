@@ -5,6 +5,10 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author stone
+ * @date 2021/07/26
+ */
 @Data
 public class UserBriefVO implements Serializable {
 
@@ -17,5 +21,7 @@ public class UserBriefVO implements Serializable {
     private String nickname;
 
     private String password;
+
+    private String salt;
 
 }

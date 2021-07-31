@@ -8,6 +8,7 @@
     <result column="IS_DELETED" jdbcType="INTEGER" property="isDeleted" />
     <result column="PERMISSION_CODE" jdbcType="VARCHAR" property="permissionCode" />
     <result column="PERMISSION_NAME" jdbcType="VARCHAR" property="permissionName" />
+    <result column="PERMISSION_URL" jdbcType="VARCHAR" property="permissionUrl" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    ID, GMT_CREATE, GMT_MODIFIED, IS_DELETED, PERMISSION_CODE, PERMISSION_NAME
+    ID, GMT_CREATE, GMT_MODIFIED, IS_DELETED, PERMISSION_CODE, PERMISSION_NAME, PERMISSION_URL
   </sql>
   <select id="selectByExample" parameterType="com.example.demo.dao.mybatis.entity.PermissionDOExample" resultMap="BaseResultMap">
     select
@@ -85,7 +86,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from JWS_PERMISSION
     where ID = #{id,jdbcType=INTEGER}
@@ -101,12 +102,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.example.demo.dao.mybatis.entity.PermissionDO">
-    insert into JWS_PERMISSION (ID, GMT_CREATE, GMT_MODIFIED, 
-      IS_DELETED, PERMISSION_CODE, PERMISSION_NAME
-      )
-    values (#{id,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=INTEGER}, #{permissionCode,jdbcType=VARCHAR}, #{permissionName,jdbcType=VARCHAR}
-      )
+    insert into JWS_PERMISSION (ID, GMT_CREATE, GMT_MODIFIED,
+      IS_DELETED, PERMISSION_CODE, PERMISSION_NAME,
+      PERMISSION_URL)
+    values (#{id,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP},
+      #{isDeleted,jdbcType=INTEGER}, #{permissionCode,jdbcType=VARCHAR}, #{permissionName,jdbcType=VARCHAR},
+      #{permissionUrl,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.example.demo.dao.mybatis.entity.PermissionDO">
     insert into JWS_PERMISSION
@@ -129,6 +130,9 @@
       <if test="permissionName != null">
         PERMISSION_NAME,
       </if>
+      <if test="permissionUrl != null">
+        PERMISSION_URL,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -148,6 +152,9 @@
       </if>
       <if test="permissionName != null">
         #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionUrl != null">
+        #{permissionUrl,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -178,6 +185,9 @@
       <if test="record.permissionName != null">
         PERMISSION_NAME = #{record.permissionName,jdbcType=VARCHAR},
       </if>
+      <if test="record.permissionUrl != null">
+        PERMISSION_URL = #{record.permissionUrl,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -190,7 +200,8 @@
       GMT_MODIFIED = #{record.gmtModified,jdbcType=TIMESTAMP},
       IS_DELETED = #{record.isDeleted,jdbcType=INTEGER},
       PERMISSION_CODE = #{record.permissionCode,jdbcType=VARCHAR},
-      PERMISSION_NAME = #{record.permissionName,jdbcType=VARCHAR}
+      PERMISSION_NAME = #{record.permissionName,jdbcType=VARCHAR},
+      PERMISSION_URL = #{record.permissionUrl,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -213,6 +224,9 @@
       <if test="permissionName != null">
         PERMISSION_NAME = #{permissionName,jdbcType=VARCHAR},
       </if>
+      <if test="permissionUrl != null">
+        PERMISSION_URL = #{permissionUrl,jdbcType=VARCHAR},
+      </if>
     </set>
     where ID = #{id,jdbcType=INTEGER}
   </update>
@@ -222,7 +236,8 @@
       GMT_MODIFIED = #{gmtModified,jdbcType=TIMESTAMP},
       IS_DELETED = #{isDeleted,jdbcType=INTEGER},
       PERMISSION_CODE = #{permissionCode,jdbcType=VARCHAR},
-      PERMISSION_NAME = #{permissionName,jdbcType=VARCHAR}
+      PERMISSION_NAME = #{permissionName,jdbcType=VARCHAR},
+      PERMISSION_URL = #{permissionUrl,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
