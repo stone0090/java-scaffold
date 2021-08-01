@@ -81,6 +81,11 @@ const UserManager: React.FC = () => {
       valueType: 'textarea',
     },
     {
+      title: '昵称',
+      dataIndex: 'nickname',
+      valueType: 'textarea',
+    },
+    {
       title: '更新时间',
       dataIndex: 'gmtModified',
       valueType: 'dateTime',

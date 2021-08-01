@@ -34,9 +34,6 @@ public class UserConverter {
         userDetailVO.setResume(userDO.getResume());
         userDetailVO.setPhone(userDO.getPhone());
         userDetailVO.setEmail(userDO.getEmail());
-        userDetailVO.setAuthority("admin");
-        userDetailVO.setLoginType("account");
-        userDetailVO.setAccess("admin");
         return userDetailVO;
     }
 

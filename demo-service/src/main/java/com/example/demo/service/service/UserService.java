@@ -13,12 +13,6 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public interface UserService  {
 
-    // hibernate validator 使用方法
-    // https://blog.csdn.net/f641385712/article/details/97402946
-    // https://www.cnblogs.com/mr-yang-localhost/p/7812038.html
-
-    UserDetailVO login(@NotNull(message = "入参不能为空") @Valid UserLoginRequest request);
-
     PageResult<UserBriefVO> listUsers(@NotNull(message = "查询条件不能为空") @Valid UserQueryRequest queryRequest,
                                       @NotNull(message = "分页参数不能为空") @Valid PageRequest pageRequest);
 
@@ -30,7 +24,7 @@ public interface UserService  {
     /**
      * 获取用户详细信息(包含角色和权限)
      */
-    UserDetailVO getUserWithRole(@NotNull(message = "入参不能为空") String username);
+    UserDetailVO getUserWithRoleAndPermission(@NotNull(message = "入参不能为空") String username);
 
     int saveUser(@NotNull(message = "入参不能为空") @Valid UserSaveRequest request);
 

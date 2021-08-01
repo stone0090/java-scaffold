@@ -23,19 +23,6 @@ declare namespace API {
     phone?: string;
   };
 
-  type LoginResult = {
-    code?: string;
-    message?: string;
-    requestId?: string;
-    success?: boolean;
-    data?: {
-      id?: number;
-      username?: string;
-      authority?: string;
-      loginType?: string;
-    }
-  };
-
   type PageParams = {
     current?: number;
     pageSize?: number;

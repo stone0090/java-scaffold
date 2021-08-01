@@ -35,7 +35,7 @@ public class ShiroRealm extends AuthorizingRealm {
         if (StringUtils.isEmpty(username)) {
             return null;
         }
-        UserDetailVO userDetailVO = userService.getUserWithRole(username);
+        UserDetailVO userDetailVO = userService.getUserWithRoleAndPermission(username);
         if (userDetailVO == null) {
             return null;
         }

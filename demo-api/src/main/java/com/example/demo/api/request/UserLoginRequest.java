@@ -21,8 +21,6 @@ public class UserLoginRequest implements Serializable {
     @Pattern(regexp = "^\\w+$", message = "密码只能包含英文字母、数字、下划线")
     private String password;
 
-    private String type;
-
     private boolean autoLogin;
 
 }

@@ -19,12 +19,6 @@ public class UserDetailVO extends UserBriefVO {
 
     private String email;
 
-    private String authority;
-
-    private String loginType;
-
-    private String access;
-
     /**
      * 用户可以有多个角色
      */

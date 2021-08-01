@@ -1,20 +1,20 @@
-package com.example.demo.web.aop;
-
-import java.util.Iterator;
+package com.example.demo.web.config;
 
 import javax.validation.ConstraintViolationException;
 
 import com.example.demo.api.protocal.RestResult;
 import com.example.demo.api.protocal.ResultCodeEnum;
-import com.example.demo.service.exception.CustomException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * @author stone
+ */
 @RestControllerAdvice
-public class ExceptionAop {
+public class ExceptionConfig {
 
     /**
      * 统一处理 hibernate Validator 抛出来的参数校验异常
@@ -40,9 +40,9 @@ public class ExceptionAop {
         return RestResult.failure(ResultCodeEnum.ARGUMENT_ERROR.getCode(), message.toString());
     }
 
-    @ExceptionHandler(CustomException.class)
+    @ExceptionHandler(RuntimeException.class)
     public @ResponseBody
-    RestResult handleCustomException(CustomException e) {
+    RestResult handleRuntimeException(RuntimeException e) {
         return RestResult.failure(ResultCodeEnum.CUSTOM_ERROR.getCode(), e.getMessage());
     }
 

@@ -4,15 +4,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.annotation.PostConstruct;
+import javax.servlet.Filter;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.mgt.SecurityManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
@@ -24,14 +22,17 @@ import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 @Configuration
 public class ShiroConfig {
 
-    // https://www.w3cschool.cn/shiro/andAccessControlFilterc1if0.html
-    // https://zhuanlan.zhihu.com/p/54176956
-    // https://blog.csdn.net/sinat_40553837/article/details/88371533
-
+    /**
+     * shiro拦截器配置，必须在所有的自定义拦截器之前
+     */
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
+
+        Map<String, Filter> filtersMap = new LinkedHashMap<>();
+        filtersMap.put("accessFilter", new AccessFilter());
+        shiroFilterFactoryBean.setFilters(filtersMap);
 
         // 注意此处使用的是LinkedHashMap，是有顺序的，shiro会按从上到下的顺序匹配验证，匹配了就不再继续验证
         // 所以上面的url要苛刻，宽松的url要放在下面，尤其是"/**"要放到最下面，如果放前面的话其后的验证规则就没作用了
@@ -39,25 +40,38 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/demo/shiro/login", "anon");
         filterChainDefinitionMap.put("/demo/shiro/logout", "logout");
-        filterChainDefinitionMap.put("/demo/**", "authc");
+        filterChainDefinitionMap.put("/demo/shiro/current", "authc");
+        filterChainDefinitionMap.put("/demo/**", "accessFilter");
         filterChainDefinitionMap.put("/**", "anon");
-        //filterChainDefinitionMap.put("/index.html", "anon");
-        //filterChainDefinitionMap.put("/#/**", "anon");
-        //filterChainDefinitionMap.put("/static/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
-        //Map<String, javax.servlet.Filter> filtersMap = new LinkedHashMap<>();
-        //filtersMap.put("authc",  loginFilter());
-        //filtersMap.put("authc",  crossFilter());
-        //shiroFilterFactoryBean.setFilters(filtersMap);
-
-        //shiroFilterFactoryBean.setLoginUrl("/#/user/login");
-        //shiroFilterFactoryBean.setUnauthorizedUrl("/demo/shiro/logout");
         shiroFilterFactoryBean.setLoginUrl("/");
         shiroFilterFactoryBean.setSuccessUrl("/");
         shiroFilterFactoryBean.setUnauthorizedUrl("/");
 
         return shiroFilterFactoryBean;
+    }
+
+    @Bean
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator creator = new DefaultAdvisorAutoProxyCreator();
+        creator.setProxyTargetClass(true);
+        return creator;
+    }
+
+    /**
+     * 权限管理，配置自己的Realm管理认证
+     */
+    @Bean
+    public SecurityManager securityManager() {
+        DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
+        manager.setRealm(shiroRealm());
+        return manager;
+    }
+
+    @Bean
+    public ShiroRealm shiroRealm(){
+        return new ShiroRealm();
     }
 
     /**
@@ -70,22 +84,8 @@ public class ShiroConfig {
         return advisor;
     }
 
-    @Bean
-    public SecurityManager securityManager() {
-        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(shiroRealm());
-        return securityManager;
-    }
-
-    @Bean
-    public Subject getSubject() {
-        SecurityUtils.setSecurityManager(securityManager());
-        return SecurityUtils.getSubject();
-    }
-
     @Bean(name = "simpleMappingExceptionResolver")
-    public SimpleMappingExceptionResolver
-    createSimpleMappingExceptionResolver() {
+    public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
         SimpleMappingExceptionResolver r = new SimpleMappingExceptionResolver();
         Properties mappings = new Properties();
         mappings.setProperty("DatabaseException", "databaseError");
@@ -94,25 +94,6 @@ public class ShiroConfig {
         r.setDefaultErrorView("error");
         r.setExceptionAttribute("ex");
         return r;
-    }
-
-    //@Bean
-    //public LoginFilter loginFilter() {
-    //    LoginFilter loginFilter = new LoginFilter();
-    //    return loginFilter;
-    //}
-
-    //@Bean
-    //public CrossFilter crossFilter() {
-    //    CrossFilter crossFilter = new CrossFilter();
-    //    return crossFilter;
-    //}
-
-    @Bean
-    public ShiroRealm shiroRealm() {
-        ShiroRealm shiroRealm = new ShiroRealm();
-        //shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
-        return shiroRealm;
     }
 
     //@Bean

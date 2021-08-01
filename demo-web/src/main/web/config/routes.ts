@@ -1,5 +1,11 @@
 ﻿export default [
   {
+    path: '/welcome',
+    name: 'welcome',
+    icon: 'smile',
+    component: './Welcome',
+  },
+  {
     path: '/user',
     layout: false,
     routes: [
@@ -14,12 +20,6 @@
         ],
       },
     ],
-  },
-  {
-    path: '/welcome',
-    name: 'welcome',
-    icon: 'smile',
-    component: './Welcome',
   },
   {
     path: '/admin',
@@ -37,28 +37,22 @@
     ],
   },
   {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
-  },
-  {
     name: '用户管理',
     icon: 'table',
     path: '/userManager',
-    component: './userManager',
+    component: './UserManager',
   },
   {
     name: '角色管理',
     icon: 'table',
-    path: '/roleManager',
-    component: './TableList',
+    path: '/user/role',
+    component: './UserManager',
   },
   {
     name: '权限管理',
     icon: 'table',
-    path: '/permissionManager',
-    component: './TableList',
+    path: '/user/permission',
+    component: './UserManager',
   },
   {
     path: '/',

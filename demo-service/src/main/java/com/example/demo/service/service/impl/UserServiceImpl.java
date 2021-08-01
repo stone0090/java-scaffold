@@ -34,7 +34,6 @@ import com.example.demo.dao.mybatis.mapper.RolePermissionRelationDOMapper;
 import com.example.demo.dao.mybatis.mapper.UserDOMapper;
 import com.example.demo.dao.mybatis.mapper.UserRoleRelationDOMapper;
 import com.example.demo.service.converter.UserConverter;
-import com.example.demo.service.exception.CustomException;
 import com.example.demo.service.service.UserService;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.collections.MapUtils;
@@ -62,21 +61,6 @@ public class UserServiceImpl implements UserService {
     private RolePermissionRelationDOMapper rolePermissionRelationDOMapper;
 
     @Override
-    public UserDetailVO login(UserLoginRequest request) {
-        UserDOExample example = new UserDOExample();
-        example.createCriteria().andIsDeletedEqualTo(0).andUsernameEqualTo(request.getUsername());
-        List<UserDO> userDOList = userDOMapper.selectByExample(example);
-        if (CollectionUtils.isEmpty(userDOList)) {
-            throw new CustomException("用户名不存在");
-        }
-        UserDO userDO = userDOList.get(0);
-        if (!userDO.getPassword().equals(request.getPassword())) {
-            throw new CustomException("密码不正确");
-        }
-        return UserConverter.toDetailVO(userDO);
-    }
-
-    @Override
     public PageResult<UserBriefVO> listUsers(UserQueryRequest queryRequest, PageRequest pageRequest) {
         UserDOExample example = new UserDOExample();
         example.createCriteria().andIsDeletedEqualTo(0);
@@ -99,7 +83,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetailVO getUserWithRole(String username) {
+    public UserDetailVO getUserWithRoleAndPermission(String username) {
         UserDOExample example = new UserDOExample();
         example.createCriteria().andIsDeletedEqualTo(0).andUsernameEqualTo(username);
         List<UserDO> userDOList = userDOMapper.selectByExample(example);

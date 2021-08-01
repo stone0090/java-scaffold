@@ -26,7 +26,7 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      const result: Protocol.RestResult = await requestGet<Protocol.RestResult>('/demo/user/current');
+      const result: Protocol.RestResult = await requestGet<Protocol.RestResult>('/demo/shiro/current');
       return result?.data;
     } catch (error) {
       history.push(loginPath);

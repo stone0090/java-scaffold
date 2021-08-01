@@ -18,7 +18,7 @@ class DemoApplicationTests {
         //UserSaveRequest request = new UserSaveRequest();
         //request.setUsername("@@@");
         //userService.saveUser(request);
-        userService.getUserWithRole("stone");
+        userService.getUserWithRoleAndPermission("stone");
     }
 
 }
