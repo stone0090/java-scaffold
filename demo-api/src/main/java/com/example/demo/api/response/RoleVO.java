@@ -1,5 +1,6 @@
 package com.example.demo.api.response;
 
+import java.util.Date;
 import java.util.List;
 
 import lombok.Data;
@@ -11,6 +12,7 @@ import lombok.Data;
 @Data
 public class RoleVO {
     private Integer id;
+    private Date gmtModified;
     private String roleCode;
     private String roleName;
     /**

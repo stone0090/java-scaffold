@@ -1,7 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.api.request.UserSaveRequest;
-import com.example.demo.service.service.UserService;
+import com.example.demo.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

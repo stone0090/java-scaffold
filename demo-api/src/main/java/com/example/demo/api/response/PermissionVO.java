@@ -1,5 +1,7 @@
 package com.example.demo.api.response;
-import lombok.AllArgsConstructor;
+
+import java.util.Date;
+
 import lombok.Data;
 
 /**
@@ -9,6 +11,7 @@ import lombok.Data;
 @Data
 public class PermissionVO {
     private Integer id;
+    private Date gmtModified;
     private String permissionCode;
     private String permissionName;
     private String permissionUrl;

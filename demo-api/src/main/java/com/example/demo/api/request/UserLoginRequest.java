@@ -8,6 +8,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+/**
+ * @author stone
+ * @date 2021/07/18
+ */
 @Data
 public class UserLoginRequest implements Serializable {
 

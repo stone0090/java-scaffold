@@ -1,11 +1,5 @@
 ﻿export default [
   {
-    path: '/welcome',
-    name: 'welcome',
-    icon: 'smile',
-    component: './Welcome',
-  },
-  {
     path: '/user',
     layout: false,
     routes: [
@@ -22,41 +16,36 @@
     ],
   },
   {
-    path: '/admin',
-    name: 'admin',
-    icon: 'crown',
-    access: 'canAdmin',
-    component: './Admin',
-    routes: [
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        icon: 'smile',
-        component: './Welcome',
-      },
-    ],
-  },
-  {
-    name: '用户管理',
-    icon: 'table',
-    path: '/userManager',
-    component: './UserManager',
-  },
-  {
-    name: '角色管理',
-    icon: 'table',
-    path: '/user/role',
-    component: './UserManager',
-  },
-  {
-    name: '权限管理',
-    icon: 'table',
-    path: '/user/permission',
-    component: './UserManager',
-  },
-  {
     path: '/',
     redirect: '/welcome',
+  },
+  {
+    path: '/welcome',
+    name: 'welcome',
+    icon: 'smile',
+    component: './Welcome',
+  },
+  {
+    path: '/user-mgr',
+    name: '用户管理',
+    icon: 'team',
+    routes: [
+      {
+        path: '/user-mgr/list',
+        name: '用户列表',
+        component: './user/Manager',
+      },
+      {
+        path: '/user-mgr/role',
+        name: '角色列表',
+        component: './user/Role',
+      },
+      {
+        path: '/user-mgr/permission',
+        name: '权限列表',
+        component: './user/Permission',
+      },
+    ],
   },
   {
     component: './404',

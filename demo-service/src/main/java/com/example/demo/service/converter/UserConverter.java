@@ -1,6 +1,8 @@
 package com.example.demo.service.converter;
 
 
+import com.example.demo.api.request.PermissionSaveRequest;
+import com.example.demo.api.request.RoleSaveRequest;
 import com.example.demo.api.request.UserSaveRequest;
 import com.example.demo.api.response.PermissionVO;
 import com.example.demo.api.response.RoleVO;
@@ -37,7 +39,7 @@ public class UserConverter {
         return userDetailVO;
     }
 
-    public static UserDO toDO(UserSaveRequest request) {
+    public static UserDO toUserDO(UserSaveRequest request) {
         UserDO userDO = new UserDO();
         userDO.setId(request.getId());
         userDO.setUsername(request.getUsername());
@@ -52,18 +54,36 @@ public class UserConverter {
     public static RoleVO toRoleVO(RoleDO roleDO) {
         RoleVO roleVO = new RoleVO();
         roleVO.setId(roleDO.getId());
+        roleVO.setGmtModified(roleDO.getGmtModified());
         roleVO.setRoleCode(roleDO.getRoleCode());
         roleVO.setRoleName(roleDO.getRoleName());
         return roleVO;
     }
 
+    public static RoleDO toRoleDO(RoleSaveRequest request) {
+        RoleDO roleDO = new RoleDO();
+        roleDO.setId(request.getId());
+        roleDO.setRoleCode(request.getRoleCode());
+        roleDO.setRoleName(request.getRoleName());
+        return roleDO;
+    }
+
     public static PermissionVO toPermissionVO(PermissionDO permissionDO) {
         PermissionVO permissionVO = new PermissionVO();
         permissionVO.setId(permissionDO.getId());
+        permissionVO.setGmtModified(permissionDO.getGmtModified());
         permissionVO.setPermissionCode(permissionDO.getPermissionCode());
         permissionVO.setPermissionName(permissionDO.getPermissionName());
         permissionVO.setPermissionUrl(permissionDO.getPermissionUrl());
         return permissionVO;
     }
 
+    public static PermissionDO toPermissionDO(PermissionSaveRequest request) {
+        PermissionDO permissionDO = new PermissionDO();
+        permissionDO.setId(request.getId());
+        permissionDO.setPermissionCode(request.getPermissionCode());
+        permissionDO.setPermissionName(request.getPermissionName());
+        permissionDO.setPermissionUrl(request.getPermissionUrl());
+        return permissionDO;
+    }
 }

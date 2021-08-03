@@ -10,7 +10,6 @@ import lombok.Data;
  */
 @Data
 public class UserVO {
-
     private String name;
     private String avatar;
     private String userid;
@@ -22,5 +21,4 @@ public class UserVO {
     private Integer unreadCount;
     private String country;
     private String access;
-
 }

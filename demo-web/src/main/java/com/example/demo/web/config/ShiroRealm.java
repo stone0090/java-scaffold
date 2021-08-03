@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import com.example.demo.api.response.PermissionVO;
 import com.example.demo.api.response.RoleVO;
 import com.example.demo.api.response.UserDetailVO;
-import com.example.demo.service.service.UserService;
+import com.example.demo.service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

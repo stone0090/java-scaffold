@@ -31,7 +31,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         Map<String, Filter> filtersMap = new LinkedHashMap<>();
-        filtersMap.put("accessFilter", new AccessFilter());
+        filtersMap.put("shiroUrlFilter", new ShiroUrlFilter());
         shiroFilterFactoryBean.setFilters(filtersMap);
 
         // 注意此处使用的是LinkedHashMap，是有顺序的，shiro会按从上到下的顺序匹配验证，匹配了就不再继续验证
@@ -41,7 +41,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/demo/shiro/login", "anon");
         filterChainDefinitionMap.put("/demo/shiro/logout", "logout");
         filterChainDefinitionMap.put("/demo/shiro/current", "authc");
-        filterChainDefinitionMap.put("/demo/**", "accessFilter");
+        filterChainDefinitionMap.put("/demo/**", "shiroUrlFilter");
         filterChainDefinitionMap.put("/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
