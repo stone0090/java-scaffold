@@ -20,6 +20,21 @@ const RoleManager: React.FC = () => {
 
   const handleQuery = async (params: any) => {
     const result: Protocol.RestResult = await requestGet<Protocol.RestResult>('/demo/role/list', params);
+    // 将角色的权限列表打平到permissionName字段，给用户列表展示
+    if (result && result.data && result.data.list) {
+      const roles = result.data.list;
+      for (var i = 0; i < roles.length; i++) {
+        const role = roles[i];
+        if (role.permissions) {
+          var permissionName = "";
+          for (var j = 0; j < role.permissions.length; j++) {
+            const permission = role.permissions[j];
+            permissionName += (j == 0) ? permission.permissionName : ("、" + permission.permissionName);
+          }
+          role["permissionName"] = permissionName;
+        }
+      }
+    }
     return {
       data: result?.data?.list,
       total: result?.data?.total,
@@ -60,7 +75,7 @@ const RoleManager: React.FC = () => {
     {
       title: '角色编码',
       dataIndex: 'roleCode',
-      valueType: 'text',
+      valueType: 'textarea',
       render: (dom, record) => {
         return (
           <a
@@ -78,12 +93,20 @@ const RoleManager: React.FC = () => {
     {
       title: '角色名称',
       dataIndex: 'roleName',
-      valueType: 'text',
+      valueType: 'textarea',
+    },
+    {
+      title: '授权url',
+      dataIndex: 'permissionName',
+      valueType: 'textarea',
+      ellipsis: true,
+      hideInDescriptions: true,
     },
     {
       title: '更新时间',
       dataIndex: 'gmtModified',
       valueType: 'dateTime',
+      search: false,
     },
     {
       title: '操作',

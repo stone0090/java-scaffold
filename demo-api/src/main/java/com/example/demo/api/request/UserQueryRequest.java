@@ -10,9 +10,12 @@ import java.io.Serializable;
  */
 @Data
 public class UserQueryRequest implements Serializable {
-
+    /**
+     * 账号模糊查询
+     */
     private String username;
-
+    /**
+     * 昵称模糊查询
+     */
     private String nickname;
-
 }

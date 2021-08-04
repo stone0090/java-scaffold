@@ -26,22 +26,22 @@
     component: './Welcome',
   },
   {
-    path: '/user-mgr',
+    path: '/usermgr',
     name: '用户管理',
     icon: 'team',
     routes: [
       {
-        path: '/user-mgr/list',
+        path: '/usermgr/list',
         name: '用户列表',
         component: './user/Manager',
       },
       {
-        path: '/user-mgr/role',
+        path: '/usermgr/role',
         name: '角色列表',
         component: './user/Role',
       },
       {
-        path: '/user-mgr/permission',
+        path: '/usermgr/permission',
         name: '权限列表',
         component: './user/Permission',
       },

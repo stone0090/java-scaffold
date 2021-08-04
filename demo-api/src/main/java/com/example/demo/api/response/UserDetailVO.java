@@ -14,8 +14,4 @@ public class UserDetailVO extends UserBriefVO {
     private String resume;
     private String phone;
     private String email;
-    /**
-     * 用户可以有多个角色
-     */
-    private List<RoleVO> roles;
 }

@@ -27,8 +27,8 @@ public enum ResultCodeEnum {
      */
 
     SUCCESS("200"),
-    ARGUMENT_ERROR("400"),
-    CUSTOM_ERROR("422"),
+    ARGUMENT_ERROR("406"),
+    CUSTOM_ERROR("400"),
     SERVER_ERROR("500"),
     ;
 

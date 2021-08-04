@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author stone
@@ -17,4 +18,8 @@ public class UserBriefVO implements Serializable {
     private String nickname;
     private String password;
     private String salt;
+    /**
+     * 用户可以有多个角色
+     */
+    private List<RoleVO> roles;
 }

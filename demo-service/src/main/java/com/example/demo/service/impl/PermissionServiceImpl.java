@@ -1,7 +1,10 @@
 package com.example.demo.service.impl;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.example.demo.api.protocal.PageRequest;
@@ -13,7 +16,10 @@ import com.example.demo.api.response.PermissionVO;
 import com.example.demo.dao.mybatis.entity.PermissionDO;
 import com.example.demo.dao.mybatis.entity.PermissionDOExample;
 import com.example.demo.dao.mybatis.entity.PermissionDOExample.Criteria;
+import com.example.demo.dao.mybatis.entity.RolePermissionRelationDO;
+import com.example.demo.dao.mybatis.entity.RolePermissionRelationDOExample;
 import com.example.demo.dao.mybatis.mapper.PermissionDOMapper;
+import com.example.demo.dao.mybatis.mapper.RolePermissionRelationDOMapper;
 import com.example.demo.service.PermissionService;
 import com.example.demo.service.converter.UserConverter;
 import com.github.pagehelper.PageHelper;
@@ -31,6 +37,8 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Autowired
     private PermissionDOMapper permissionDOMapper;
+    @Autowired
+    private RolePermissionRelationDOMapper rolePermissionRelationDOMapper;
 
     @Override
     public PageResult<PermissionVO> listPermissions(PermissionQueryRequest queryRequest, PageRequest pageRequest) {
@@ -81,4 +89,29 @@ public class PermissionServiceImpl implements PermissionService {
         permissionDO.setGmtModified(new Date());
         return permissionDOMapper.updateByPrimaryKeySelective(permissionDO);
     }
+
+    @Override
+    public Map<String, List<PermissionVO>> listPermissionsByRoleCodes(List<String> roleCodeList) {
+        RolePermissionRelationDOExample example = new RolePermissionRelationDOExample();
+        example.createCriteria().andIsDeletedEqualTo(0).andRoleCodeIn(roleCodeList);
+        List<RolePermissionRelationDO> relationDOList = rolePermissionRelationDOMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(relationDOList)) {
+            return Collections.emptyMap();
+        }
+        List<String> permissionCodeList = relationDOList.stream().map(RolePermissionRelationDO::getPermissionCode)
+            .collect(Collectors.toList());
+        PermissionDOExample permissionDOExample = new PermissionDOExample();
+        permissionDOExample.createCriteria().andIsDeletedEqualTo(0).andPermissionCodeIn(permissionCodeList);
+        List<PermissionDO> permissionDOList = permissionDOMapper.selectByExample(permissionDOExample);
+        if (CollectionUtils.isEmpty(permissionDOList)) {
+            return Collections.emptyMap();
+        }
+        Map<String, PermissionDO> permissionDOMap = permissionDOList.stream()
+            .collect(Collectors.toMap(PermissionDO::getPermissionCode, Function.identity(), (x, y) -> x));
+        Map<String, List<PermissionVO>> roleCodePermissionVOMap = relationDOList.stream()
+            .collect(Collectors.groupingBy(RolePermissionRelationDO::getRoleCode, Collectors.mapping(
+                x -> UserConverter.toPermissionVO(permissionDOMap.get(x.getPermissionCode())), Collectors.toList())));
+        return roleCodePermissionVOMap;
+    }
+
 }

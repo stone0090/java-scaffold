@@ -2,7 +2,7 @@
 
 ## 技术选型
 
-- Java脚手架：[Aliyun Java Initializr](https://start.aliyun.com/bootstrap.html)
+- 脚手架：[Aliyun Java Initializr](https://start.aliyun.com/bootstrap.html)
 - 核心框架：[Spring Boot](https://spring.io/projects/spring-boot)
 - 数据库层：[MyBatis 3](https://mybatis.org/mybatis-3/zh/index.html)
 - 数据库连接池：[Druid](https://github.com/alibaba/druid)
@@ -11,7 +11,6 @@
 - 安全框架：[Apache Shiro](http://shiro.apache.org/)
 - 前端框架：[Ant Design Pro](https://pro.ant.design)
 - 接口文档：[swagger](https://swagger.io/)
-- 参数校验：[Hibernate Validator](http://hibernate.org/validator/documentation/)
 - 诊断工具：[Arthas](https://arthas.aliyun.com/doc/)
 
 ## 功能设计（初步设想）

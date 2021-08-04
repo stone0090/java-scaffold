@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import java.util.List;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -19,11 +21,13 @@ import org.springframework.validation.annotation.Validated;
 public interface RoleService {
 
     PageResult<RoleVO> listRoles(@NotNull(message = "查询条件不能为空") @Valid RoleQueryRequest queryRequest,
-                                             @NotNull(message = "分页参数不能为空") @Valid PageRequest pageRequest);
+                                 @NotNull(message = "分页参数不能为空") @Valid PageRequest pageRequest);
 
     RoleVO getRole(@NotNull(message = "入参不能为空") @Valid IdentifierRequest request);
 
     int saveRole(@NotNull(message = "入参不能为空") @Valid RoleSaveRequest request);
 
     int removeRole(@NotNull(message = "入参不能为空") @Valid IdentifierRequest request);
+
+    List<RoleVO> listRolesByUsername(@NotNull(message = "入参不能为空") @Valid String username);
 }

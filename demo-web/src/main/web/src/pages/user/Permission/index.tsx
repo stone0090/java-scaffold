@@ -60,7 +60,7 @@ const RoleManager: React.FC = () => {
     {
       title: '权限编码',
       dataIndex: 'permissionCode',
-      valueType: 'text',
+      valueType: 'textarea',
       render: (dom, record) => {
         return (
           <a
@@ -78,17 +78,18 @@ const RoleManager: React.FC = () => {
     {
       title: '权限名称',
       dataIndex: 'permissionName',
-      valueType: 'text',
+      valueType: 'textarea',
     },
     {
       title: '授权url',
       dataIndex: 'permissionUrl',
-      valueType: 'text',
+      valueType: 'textarea',
     },
     {
       title: '更新时间',
       dataIndex: 'gmtModified',
       valueType: 'dateTime',
+      search: false,
     },
     {
       title: '操作',
@@ -122,7 +123,7 @@ const RoleManager: React.FC = () => {
   return (
     <PageContainer>
       <ProTable
-        headerTitle='角色列表'
+        headerTitle='权限列表'
         actionRef={actionRef}
         bordered={true}
         rowKey="id"

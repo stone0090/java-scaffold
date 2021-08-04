@@ -14,11 +14,16 @@ import lombok.Data;
  */
 @Data
 public class PermissionQueryRequest implements Serializable {
-
+    /**
+     * 权限编码模糊查询
+     */
     private String permissionCode;
-
+    /**
+     * 权限名称模糊查询
+     */
     private String permissionName;
-
+    /**
+     * 权限url模糊查询
+     */
     private String permissionUrl;
-
 }

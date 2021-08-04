@@ -20,6 +20,21 @@ const UserManager: React.FC = () => {
 
   const handleQuery = async (params: any) => {
     const result: Protocol.RestResult = await requestGet<Protocol.RestResult>('/demo/user/list', params);
+    // 将用户的角色列表打平到roleName字段，给用户列表展示
+    if (result && result.data && result.data.list) {
+      const users = result.data.list;
+      for (var i = 0; i < users.length; i++) {
+        const user = users[i];
+        if (user.roles) {
+          var roleName = "";
+          for (var j = 0; j < user.roles.length; j++) {
+            const role = user.roles[j];
+            roleName += (j == 0) ? role.roleName : ("、" + role.roleName);
+          }
+          user["roleName"] = roleName;
+        }
+      }
+    }
     return {
       data: result?.data?.list,
       total: result?.data?.total,
@@ -60,7 +75,7 @@ const UserManager: React.FC = () => {
     {
       title: '账号',
       dataIndex: 'username',
-      valueType: 'text',
+      valueType: 'textarea',
       render: (dom, record) => {
         return (
           <a
@@ -78,13 +93,18 @@ const UserManager: React.FC = () => {
     {
       title: '密码',
       dataIndex: 'password',
-      valueType: 'text',
+      valueType: 'textarea',
       search: false,
     },
     {
       title: '昵称',
       dataIndex: 'nickname',
-      valueType: 'text',
+      valueType: 'textarea',
+    },
+    {
+      title: '角色',
+      dataIndex: 'roleName',
+      valueType: 'textarea',
     },
     {
       title: '更新时间',

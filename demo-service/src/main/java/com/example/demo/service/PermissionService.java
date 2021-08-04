@@ -1,5 +1,8 @@
 package com.example.demo.service;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -26,4 +29,7 @@ public interface PermissionService {
     int savePermission(@NotNull(message = "入参不能为空") @Valid PermissionSaveRequest request);
 
     int removePermission(@NotNull(message = "入参不能为空") @Valid IdentifierRequest request);
+
+    Map<String, List<PermissionVO>> listPermissionsByRoleCodes(
+        @NotNull(message = "入参不能为空") @Valid List<String> roleCodeList);
 }

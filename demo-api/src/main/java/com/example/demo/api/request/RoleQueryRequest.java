@@ -10,9 +10,12 @@ import lombok.Data;
  */
 @Data
 public class RoleQueryRequest implements Serializable {
-
+    /**
+     * 角色编码模糊查询
+     */
     private String roleCode;
-
+    /**
+     * 角色名称模糊查询
+     */
     private String roleName;
-
 }
