@@ -22,7 +22,7 @@
         <lombok.version>1.18.12</lombok.version>
         <swagger.version>3.0.0</swagger.version>
         <pagehelper.version>1.3.1</pagehelper.version>
-        <validation.version>2.0.1.Final</validation.version>
+        <druid.version>1.2.6</druid.version>
     </properties>
 
     <modules>
@@ -83,6 +83,11 @@
                 <groupId>org.apache.shiro</groupId>
                 <artifactId>shiro-spring</artifactId>
                 <version>${shiro-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
             </dependency>
             <!--            <dependency>-->
             <!--                <groupId>io.springfox</groupId>-->
