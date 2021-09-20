@@ -29,3 +29,6 @@
 - 权限管理
 
 ## 日志规范
+
+## 参考资料
+- https://www.w3cschool.cn/shiro/andc1if0.html
