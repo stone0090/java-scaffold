@@ -64,7 +64,7 @@ export default defineConfig({
       projectName: 'swagger',
     },
   ],
-  outputPath: '../resources/static',
+  outputPath: '../demo-web/src/main/resources/static',
   history: { type: 'hash' }, // 默认是 browsers
   proxy: {
     '/demo': {

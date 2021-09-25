@@ -8,7 +8,7 @@
 - 连接池：[Druid](https://github.com/alibaba/druid)
 - 安全框架：[Apache Shiro](http://shiro.apache.org/)
 - 前端框架：[Ant Design Pro](https://pro.ant.design)
-- 接口文档：[swagger](https://swagger.io/)
+- 接口文档：[Swagger](https://swagger.io/)
 - 诊断工具：[Arthas](https://arthas.aliyun.com/doc/)
 
 ## 访问入口
@@ -22,10 +22,15 @@
 - druid监控：
   - 访问入口：http://localhost:8080/druid/index.html
   - 账号密码：stone / 123456
+- swagger接口文档：
+  - 访问入口：http://localhost:8080/swagger-ui/index.html
   
-## 功能设计（初步设想）
+## 功能设计
 - 用户管理
 - 角色管理
 - 权限管理
 
 ## 日志规范
+
+## 参考资料
+- https://www.w3cschool.cn/shiro/andc1if0.html
