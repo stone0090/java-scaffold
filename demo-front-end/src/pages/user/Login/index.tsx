@@ -39,7 +39,7 @@ const Login: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState<Protocol.RestResult>({});
   const { initialState, setInitialState } = useModel('@@initialState');
   const intl = useIntl();
-  
+
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
     if (userInfo) {
@@ -78,10 +78,10 @@ const Login: React.FC = () => {
         <div className={styles.top}>
           <div className={styles.header}>
             <img alt="logo" className={styles.logo} src="/github.svg" />
-            <span className={styles.title}>Java Web Scaffold</span>
+            <span className={styles.title}>Java Scaffold</span>
           </div>
           <div className={styles.desc}>
-            https://github.com/stone0090/java-web-scaffold
+            https://github.com/stone0090/java-scaffold
           </div>
         </div>
 
