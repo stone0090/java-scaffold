@@ -6,6 +6,8 @@ import com.example.demo.api.protocal.RestResult;
 import com.example.demo.api.request.UserLoginRequest;
 import com.example.demo.api.response.UserDetailVO;
 import com.example.demo.api.response.UserVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -23,9 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Validated
 @RestController
+@Api(value = "ShiroController", tags = "登陆管理")
 @RequestMapping("/demo/shiro")
 public class ShiroController {
 
+    @ApiOperation("登陆")
     @PostMapping("/login")
     public RestResult login(@RequestBody @Valid UserLoginRequest request) {
         try {
@@ -37,11 +41,13 @@ public class ShiroController {
         return RestResult.success();
     }
 
+    @ApiOperation("登出")
     @PostMapping("/logout")
     public RestResult logout() {
         return RestResult.success();
     }
 
+    @ApiOperation("获取当前登陆用户")
     @GetMapping("/current")
     public RestResult current() {
         Subject subject = SecurityUtils.getSubject();
