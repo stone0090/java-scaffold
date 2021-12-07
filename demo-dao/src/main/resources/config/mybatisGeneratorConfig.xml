@@ -12,7 +12,7 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="org.h2.Driver"
-                        connectionURL="jdbc:h2:./src/main/resources/database/demo" userId="san"
+                        connectionURL="jdbc:h2:../demo" userId="san"
                         password="">
         </jdbcConnection>
 

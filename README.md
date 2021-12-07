@@ -13,12 +13,12 @@
 
 ## 访问入口
 - 系统首页：
-  - 访问入口：http://localhost:8000
+  - 访问入口：http://localhost:8080
   - 账号密码：stone / 123456
 - h2数据库：
   - 访问入口：http://127.0.0.1:8080/h2-console
   - 账号密码：san /（没有密码）
-  - jdbcurl：jdbc:h2:file:./demo-dao/src/main/resources/database/demo
+  - jdbcurl：jdbc:h2:file:./demo
 - druid监控：
   - 访问入口：http://localhost:8080/druid/index.html
   - 账号密码：stone / 123456
@@ -29,6 +29,9 @@
 - 用户管理
 - 角色管理
 - 权限管理
+
+## 容器支持
+- 执行项目根路径下的 `docker-build.sh` 即可容器化启动本项目
 
 ## 日志规范
 
