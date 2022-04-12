@@ -46,14 +46,14 @@ public class UserController {
     @ApiOperation("新增用户")
     @PostMapping("/add")
     public RestResult addUser(@RequestBody UserSaveRequest request) {
-        int count = userService.saveUser(request);
-        return RestResult.success(count);
+        int id = userService.addUser(request);
+        return RestResult.success(id);
     }
 
     @ApiOperation("编辑用户")
     @PostMapping("/edit")
     public RestResult editUser(@RequestBody UserSaveRequest request) {
-        int count = userService.saveUser(request);
+        int count = userService.editUser(request);
         return RestResult.success(count);
     }
 

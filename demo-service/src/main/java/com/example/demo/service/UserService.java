@@ -24,7 +24,18 @@ public interface UserService  {
 
     UserDetailVO getUser(@NotNull(message = "入参不能为空") String username);
 
-    int saveUser(@NotNull(message = "入参不能为空") @Valid UserSaveRequest request);
+    /**
+     * @return 返回主键id
+     */
+    int addUser(@NotNull(message = "入参不能为空") @Valid UserSaveRequest request);
 
+    /**
+     * @return 返回操作记录数
+     */
+    int editUser(@NotNull(message = "入参不能为空") @Valid UserSaveRequest request);
+
+    /**
+     * @return 返回操作记录数
+     */
     int removeUser(@NotNull(message = "入参不能为空") @Valid IdentifierRequest request);
 }

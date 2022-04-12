@@ -57,49 +57,93 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailVO getUser(IdentifierRequest request) {
-        UserDOExample example = new UserDOExample();
-        example.createCriteria().andIsDeletedEqualTo(0).andIdEqualTo(request.getId());
-        List<UserDO> result = userDOMapper.selectByExample(example);
-        if (CollectionUtils.isEmpty(result)) {
+        UserDO result = getById(request.getId());
+        if (result == null) {
             return null;
         }
-        UserDetailVO userDetailVO = UserConverter.toDetailVO(result.get(0));
+        UserDetailVO userDetailVO = UserConverter.toDetailVO(result);
         userDetailVO.setRoles(roleService.listRolesByUsername(userDetailVO.getUsername()));
         return userDetailVO;
     }
 
     @Override
     public UserDetailVO getUser(String username) {
-        UserDOExample example = new UserDOExample();
-        example.createCriteria().andIsDeletedEqualTo(0).andUsernameEqualTo(username);
-        List<UserDO> result = userDOMapper.selectByExample(example);
-        if (CollectionUtils.isEmpty(result)) {
+        UserDO result = getByUsername(username);
+        if (result == null) {
             return null;
         }
-        UserDetailVO userDetailVO = UserConverter.toDetailVO(result.get(0));
+        UserDetailVO userDetailVO = UserConverter.toDetailVO(result);
         userDetailVO.setRoles(roleService.listRolesByUsername(userDetailVO.getUsername()));
         return userDetailVO;
     }
 
     @Override
-    public int saveUser(UserSaveRequest request) {
-        UserDO userDO = UserConverter.toUserDO(request);
-        if (userDO.getId() == null) {
-            return userDOMapper.insertSelective(userDO);
-        } else {
-            userDO.setUsername(null);
-            userDO.setGmtModified(new Date());
-            return userDOMapper.updateByPrimaryKeySelective(userDO);
+    public int addUser(UserSaveRequest request) {
+        if (countByUsername(request.getUsername()) > 0) {
+            throw new RuntimeException("username已存在！");
         }
+        UserDO userDO = UserConverter.toUserDO(request);
+        // 新增时不允许指定id，只能自增
+        userDO.setId(null);
+        return userDOMapper.insertSelective(userDO);
+    }
+
+    @Override
+    public int editUser(UserSaveRequest request) {
+        UserDO userDO = UserConverter.toUserDO(request);
+        // 不允许修改业务唯一标识
+        userDO.setUsername(null);
+        userDO.setGmtModified(new Date());
+        return userDOMapper.updateByPrimaryKeySelective(userDO);
     }
 
     @Override
     public int removeUser(IdentifierRequest request) {
         UserDO userDO = new UserDO();
         userDO.setId(request.getId());
-        userDO.setIsDeleted((int)System.currentTimeMillis());
+        userDO.setIsDeleted((int) System.currentTimeMillis());
         userDO.setGmtModified(new Date());
         return userDOMapper.updateByPrimaryKeySelective(userDO);
+    }
+
+    private int countByUsername(String username) {
+        UserDO condition = new UserDO();
+        condition.setUsername(username);
+        UserDOExample example = buildCondition(condition);
+        return userDOMapper.countByExample(example);
+    }
+
+    private UserDO getByUsername(String username) {
+        UserDO condition = new UserDO();
+        condition.setUsername(username);
+        return getByCondition(buildCondition(condition));
+    }
+
+    private UserDO getById(Integer id) {
+        UserDO condition = new UserDO();
+        condition.setId(id);
+        return getByCondition(buildCondition(condition));
+    }
+
+    private UserDO getByCondition(UserDOExample example) {
+        List<UserDO> result = userDOMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(result)) {
+            return null;
+        }
+        return result.get(0);
+    }
+
+    private UserDOExample buildCondition(UserDO userDO) {
+        UserDOExample example = new UserDOExample();
+        Criteria criteria = example.createCriteria();
+        criteria.andIsDeletedEqualTo(0);
+        if (userDO.getId() != null && userDO.getId() > 0) {
+            criteria.andIdEqualTo(userDO.getId());
+        }
+        if (!StringUtils.isEmpty(userDO.getUsername())) {
+            criteria.andUsernameEqualTo(userDO.getUsername());
+        }
+        return example;
     }
 
 }
